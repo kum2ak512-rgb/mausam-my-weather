@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { HomeScreen } from "@/components/mausam/HomeScreen";
+import { MausamApp } from "@/components/mausam/MausamApp";
 
 const title = "Mausam — Personalized Weather Home by IMD";
 const description =
@@ -23,7 +23,7 @@ function Index() {
   return (
     <div className="min-h-screen bg-background">
       <h1 className="sr-only">Mausam personalized weather homepage</h1>
-      <HomeScreen />
+      <MausamApp />
     </div>
   );
 }
