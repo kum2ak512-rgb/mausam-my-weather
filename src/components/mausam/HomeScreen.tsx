@@ -17,7 +17,14 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { currentWeather, hourly, profiles, type PriorityCard } from "@/data/profiles";
+import {
+  currentWeather,
+  hourly,
+  profiles,
+  type PriorityCard,
+  type Profile,
+  type ProfileId,
+} from "@/data/profiles";
 
 const toneClass: Record<PriorityCard["tone"], string> = {
   good: "text-good",
@@ -34,8 +41,8 @@ const hourIcon = {
 };
 
 export function HomeScreen() {
-  const [activeId, setActiveId] = useState(profiles[0].id);
-  const profile = profiles.find((p) => p.id === activeId) ?? profiles[0];
+  const [activeId, setActiveId] = useState<ProfileId>("fitness");
+  const profile: Profile = profiles.find((p) => p.id === activeId) ?? profiles[0]!;
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col pb-24">
