@@ -30,16 +30,20 @@ const toneClass: Record<PriorityCard["tone"], string> = {
 
 export function HomeScreen({
   profile,
+  place,
   onSelectProfile,
   onOpenProfile,
   onOpenAlerts,
   onOpenForecast,
+  onChangeLocation,
 }: {
   profile: Profile;
+  place: { name: string; region: string; temp: number; condition: string };
   onSelectProfile: (id: ProfileId) => void;
   onOpenProfile: () => void;
   onOpenAlerts: () => void;
   onOpenForecast: () => void;
+  onChangeLocation: () => void;
 }) {
   return (
     <>
@@ -47,10 +51,16 @@ export function HomeScreen({
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 pb-3 pt-6">
         <div className="min-w-0">
           <p className="text-lg font-extrabold tracking-[0.18em] text-primary">MAUSAM</p>
-          <div className="mt-0.5 flex min-w-0 items-center gap-1 text-muted-foreground">
+          <button
+            onClick={onChangeLocation}
+            className="mt-0.5 flex min-w-0 items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+          >
             <MapPin className="size-3.5 shrink-0" />
-            <span className="truncate text-xs">{currentWeather.location}</span>
-          </div>
+            <span className="truncate text-xs">
+              {place.name}, {place.region}
+            </span>
+            <ChevronRight className="size-3.5 shrink-0" />
+          </button>
         </div>
         <button
           aria-label="Open profile"
