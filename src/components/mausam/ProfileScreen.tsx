@@ -1,19 +1,36 @@
 import { useState } from "react";
-import { Bell, Check, MapPin, Moon, User } from "lucide-react";
+import { Bell, Check, ChevronRight, MapPin, Moon, Pencil, User } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { currentWeather, profiles, type Profile, type ProfileId } from "@/data/profiles";
+import { profiles, type Profile, type ProfileId } from "@/data/profiles";
 import { ScreenHeader } from "./ScreenHeader";
 
 export function ProfileScreen({
   profile,
   onSelectProfile,
+  userName,
+  onChangeName,
+  placeLabel,
+  onChangeLocation,
 }: {
   profile: Profile;
   onSelectProfile: (id: ProfileId) => void;
+  userName: string;
+  onChangeName: (name: string) => void;
+  placeLabel: string;
+  onChangeLocation: () => void;
 }) {
   const [pushAlerts, setPushAlerts] = useState(true);
   const [dailyBrief, setDailyBrief] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(userName);
+
+  const save = () => {
+    const next = draft.trim();
+    if (next) onChangeName(next);
+    else setDraft(userName);
+    setEditing(false);
+  };
 
   return (
     <>
@@ -24,14 +41,65 @@ export function ProfileScreen({
           <span className="grid size-12 shrink-0 place-items-center rounded-full bg-sky-soft text-sky">
             <User className="size-6" />
           </span>
-          <div className="min-w-0">
-            <p className="text-sm font-bold text-foreground">Akash Kumar</p>
+          <div className="min-w-0 flex-1">
+            {editing ? (
+              <input
+                autoFocus
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onBlur={save}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") save();
+                  if (e.key === "Escape") {
+                    setDraft(userName);
+                    setEditing(false);
+                  }
+                }}
+                aria-label="Your name"
+                className="w-full rounded-lg border border-border bg-background px-2 py-1 text-sm font-bold text-foreground outline-none focus:border-primary"
+              />
+            ) : (
+              <p className="truncate text-sm font-bold text-foreground">{userName}</p>
+            )}
             <p className="flex items-center gap-1 text-xs text-muted-foreground">
-              <MapPin className="size-3.5" />
-              <span className="truncate">{currentWeather.location}</span>
+              <MapPin className="size-3.5 shrink-0" />
+              <span className="truncate">{placeLabel}</span>
             </p>
           </div>
+          {editing ? (
+            <button
+              onClick={save}
+              className="shrink-0 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground"
+            >
+              Save
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setDraft(userName);
+                setEditing(true);
+              }}
+              aria-label="Edit name"
+              className="grid size-9 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground transition-colors hover:bg-accent"
+            >
+              <Pencil className="size-4" />
+            </button>
+          )}
         </section>
+
+        <button
+          onClick={onChangeLocation}
+          className="card-soft flex items-center gap-3 p-4 text-left transition-colors hover:bg-secondary"
+        >
+          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-sky-soft text-sky">
+            <MapPin className="size-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-foreground">Change location</p>
+            <p className="truncate text-xs text-muted-foreground">{placeLabel}</p>
+          </div>
+          <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+        </button>
 
         <section>
           <h3 className="mb-2 text-sm font-bold text-foreground">Active profile</h3>
