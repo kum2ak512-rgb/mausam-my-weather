@@ -2,16 +2,22 @@ import { useState } from "react";
 import { Droplets } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { currentWeather, daily, hourly, type Profile } from "@/data/profiles";
+import { daily, hourly, type Profile } from "@/data/profiles";
 import { weatherIcon, type WeatherIconName } from "./icons";
 import { ScreenHeader } from "./ScreenHeader";
 
-export function ForecastScreen({ profile }: { profile: Profile }) {
+export function ForecastScreen({
+  profile,
+  placeName,
+}: {
+  profile: Profile;
+  placeName: string;
+}) {
   const [openDay, setOpenDay] = useState<string | null>("Today");
 
   return (
     <>
-      <ScreenHeader title="Forecast" subtitle={`${currentWeather.location} · 7 days`} />
+      <ScreenHeader title="Forecast" subtitle={`${placeName} · 7 days`} />
 
       <main className="flex flex-col gap-4 px-5 pt-2">
         <section className="card-soft p-4">
