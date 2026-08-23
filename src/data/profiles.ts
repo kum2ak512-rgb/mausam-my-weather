@@ -178,3 +178,60 @@ export const hourly = [
   { time: "4 PM", temp: 30, icon: "cloud" },
   { time: "5 PM", temp: 27, icon: "rain" },
 ] as const;
+
+export const daily = [
+  { day: "Today", date: "23 Aug", hi: 32, lo: 26, icon: "cloud-sun", rain: 60, condition: "Showers by evening" },
+  { day: "Mon", date: "24 Aug", hi: 31, lo: 25, icon: "rain", rain: 80, condition: "Rain most of the day" },
+  { day: "Tue", date: "25 Aug", hi: 33, lo: 26, icon: "cloud-sun", rain: 30, condition: "Partly cloudy" },
+  { day: "Wed", date: "26 Aug", hi: 34, lo: 27, icon: "sun", rain: 10, condition: "Sunny and humid" },
+  { day: "Thu", date: "27 Aug", hi: 33, lo: 27, icon: "cloud", rain: 25, condition: "Cloudy spells" },
+  { day: "Fri", date: "28 Aug", hi: 30, lo: 25, icon: "rain", rain: 70, condition: "Thundershowers" },
+  { day: "Sat", date: "29 Aug", hi: 31, lo: 25, icon: "cloud-sun", rain: 40, condition: "Brief showers" },
+] as const;
+
+export type AlertItem = {
+  id: string;
+  title: string;
+  body: string;
+  time: string;
+  severity: "alert" | "warn" | "good";
+};
+
+export const alerts: AlertItem[] = [
+  {
+    id: "rain",
+    title: "Moderate rain warning",
+    body: "IMD expects 10–15 mm rainfall between 5 PM and 8 PM across central Delhi.",
+    time: "Today · 5:00 PM",
+    severity: "alert",
+  },
+  {
+    id: "aqi",
+    title: "AQI rising after 6 PM",
+    body: "Air quality may reach 110 (poor) near traffic corridors. Sensitive groups stay indoors.",
+    time: "Today · 6:00 PM",
+    severity: "warn",
+  },
+  {
+    id: "heat",
+    title: "High humidity advisory",
+    body: "Humidity above 80% tomorrow morning. Heat index may feel like 36°.",
+    time: "Tomorrow · 9:00 AM",
+    severity: "warn",
+  },
+  {
+    id: "clear",
+    title: "Clear morning window",
+    body: "No rain expected between 6 AM and 10 AM — good for outdoor activity.",
+    time: "Tomorrow · 6:00 AM",
+    severity: "good",
+  },
+];
+
+export const savedLocations = [
+  { id: "cp", name: "Connaught Place", region: "New Delhi", temp: 29, condition: "Partly cloudy", icon: "cloud-sun" },
+  { id: "ggn", name: "Gurugram", region: "Haryana", temp: 30, condition: "Humid", icon: "sun" },
+  { id: "noida", name: "Noida Sector 62", region: "Uttar Pradesh", temp: 28, condition: "Light rain", icon: "rain" },
+  { id: "jaipur", name: "Jaipur", region: "Rajasthan", temp: 34, condition: "Sunny", icon: "sun" },
+  { id: "shimla", name: "Shimla", region: "Himachal Pradesh", temp: 19, condition: "Cloudy", icon: "cloud" },
+] as const;

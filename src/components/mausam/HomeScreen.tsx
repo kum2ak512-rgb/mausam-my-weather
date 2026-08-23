@@ -1,16 +1,10 @@
-import { useState } from "react";
 import {
-  Bell,
-  Bookmark,
   ChevronRight,
-  Cloud,
   CloudRain,
   CloudSun,
   Droplets,
-  Home,
   MapPin,
   Sparkles,
-  Sun,
   Thermometer,
   User,
   Wind,
@@ -25,6 +19,7 @@ import {
   type Profile,
   type ProfileId,
 } from "@/data/profiles";
+import { weatherIcon, type WeatherIconName } from "./icons";
 
 const toneClass: Record<PriorityCard["tone"], string> = {
   good: "text-good",
@@ -33,19 +28,21 @@ const toneClass: Record<PriorityCard["tone"], string> = {
   neutral: "text-foreground",
 };
 
-const hourIcon = {
-  sun: Sun,
-  cloud: Cloud,
-  "cloud-sun": CloudSun,
-  rain: CloudRain,
-};
-
-export function HomeScreen() {
-  const [activeId, setActiveId] = useState<ProfileId>("fitness");
-  const profile: Profile = profiles.find((p) => p.id === activeId) ?? profiles[0]!;
-
+export function HomeScreen({
+  profile,
+  onSelectProfile,
+  onOpenProfile,
+  onOpenAlerts,
+  onOpenForecast,
+}: {
+  profile: Profile;
+  onSelectProfile: (id: ProfileId) => void;
+  onOpenProfile: () => void;
+  onOpenAlerts: () => void;
+  onOpenForecast: () => void;
+}) {
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col pb-24">
+    <>
       {/* Top bar */}
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 pb-3 pt-6">
         <div className="min-w-0">
@@ -57,6 +54,7 @@ export function HomeScreen() {
         </div>
         <button
           aria-label="Open profile"
+          onClick={onOpenProfile}
           className="grid size-10 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground transition-colors hover:bg-accent"
         >
           <User className="size-5" />
@@ -71,7 +69,7 @@ export function HomeScreen() {
           return (
             <button
               key={p.id}
-              onClick={() => setActiveId(p.id)}
+              onClick={() => onSelectProfile(p.id)}
               className={cn(
                 "flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-semibold transition-colors",
                 active
@@ -138,7 +136,10 @@ export function HomeScreen() {
         </section>
 
         {/* Alert */}
-        <section className="flex items-center gap-3 rounded-2xl border border-alert/30 bg-alert/8 p-4">
+        <button
+          onClick={onOpenAlerts}
+          className="flex items-center gap-3 rounded-2xl border border-alert/30 bg-alert/8 p-4 text-left transition-colors hover:bg-alert/12"
+        >
           <span className="grid size-9 shrink-0 place-items-center rounded-full bg-alert/15 text-alert">
             <CloudRain className="size-5" />
           </span>
@@ -147,14 +148,23 @@ export function HomeScreen() {
             <p className="text-xs text-muted-foreground">Weather alert · IMD advisory</p>
           </div>
           <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
-        </section>
+        </button>
 
         {/* Hourly forecast */}
         <section className="card-soft p-4">
-          <h2 className="mb-3 text-sm font-bold text-foreground">Hourly forecast</h2>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-bold text-foreground">Hourly forecast</h2>
+            <button
+              onClick={onOpenForecast}
+              className="flex items-center gap-0.5 text-xs font-semibold text-primary hover:underline"
+            >
+              7 days
+              <ChevronRight className="size-3.5" />
+            </button>
+          </div>
           <div className="no-scrollbar flex justify-between gap-2 overflow-x-auto">
             {hourly.map((h) => {
-              const Icon = hourIcon[h.icon];
+              const Icon = weatherIcon[h.icon as WeatherIconName];
               return (
                 <div
                   key={h.time}
@@ -169,32 +179,7 @@ export function HomeScreen() {
           </div>
         </section>
       </main>
-
-      {/* Bottom navigation */}
-      <nav className="fixed inset-x-0 bottom-0 mx-auto flex w-full max-w-md items-center justify-between border-t border-border bg-card px-4 py-2">
-        {[
-          { label: "Home", icon: Home, active: true },
-          { label: "Forecast", icon: CloudSun },
-          { label: "Alerts", icon: Bell },
-          { label: "Saved", icon: Bookmark },
-          { label: "Profile", icon: User },
-        ].map((item) => {
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.label}
-              className={cn(
-                "flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[10px] font-medium transition-colors",
-                item.active ? "text-primary" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              <Icon className="size-5" strokeWidth={item.active ? 2.2 : 1.8} />
-              {item.label}
-            </button>
-          );
-        })}
-      </nav>
-    </div>
+    </>
   );
 }
 
