@@ -99,8 +99,8 @@ export function HomeScreen({
         <section className="hero-sky rounded-3xl p-5 text-primary-foreground">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-6xl font-light leading-none">{currentWeather.temperature}°</p>
-              <p className="mt-2 text-sm font-medium opacity-90">{currentWeather.condition}</p>
+              <p className="text-6xl font-light leading-none">{place.temp}°</p>
+              <p className="mt-2 text-sm font-medium opacity-90">{place.condition}</p>
               <p className="text-xs opacity-75">Feels like {currentWeather.feelsLike}°</p>
             </div>
             <CloudSun className="size-16 opacity-90" strokeWidth={1.4} />
